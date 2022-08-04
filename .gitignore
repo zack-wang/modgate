@@ -1,0 +1,5 @@
+*.exe
+web
+*.bak
+*.txt
+functions.go
