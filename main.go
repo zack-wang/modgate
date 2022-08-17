@@ -17,7 +17,8 @@ var (
 func main() {
 	flag.Parse()
 	server := gin.Default()
-	server.GET("/:protocol/:connection/:fc/:start/:len/*format", modbusRead)
+	server.Static("/ui","./html")
+	server.GET("/modbustcp/:connection/:fc/:start/:len/*format", modbustcpRead)
 	server.GET("/",RootPage)
 	server.POST("/:protocol/:connection/:fc/:start/:format", modbusWrite)
 	server.Run(*bind)
@@ -100,7 +101,8 @@ func modbusWrite(c *gin.Context){
 	})
 }
 
-func modbusRead(c *gin.Context){
+func modbustcpRead(c *gin.Context){
+	/*
 	proto:=c.Param("protocol")
 	if proto!=`modbustcp`{
 		c.JSON(http.StatusOK, gin.H{
@@ -109,6 +111,7 @@ func modbusRead(c *gin.Context){
 		})
 		return
 	}
+	*/
 	host:=c.Param("connection")
 	fc:=c.Param("fc")
 	start:=c.Param("start")

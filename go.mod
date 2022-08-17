@@ -1,11 +1,10 @@
-module web
+module modgate
 
 go 1.18
 
 require (
 	github.com/gin-gonic/gin v1.8.1
 	github.com/goburrow/modbus v0.1.0
-	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
@@ -28,4 +27,5 @@ require (
 	golang.org/x/text v0.3.6 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

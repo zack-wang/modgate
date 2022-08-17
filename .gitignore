@@ -1,5 +1,4 @@
-*.exe
-web
 *.bak
 *.txt
+go.sum
 functions.go

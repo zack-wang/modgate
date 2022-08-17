@@ -54,3 +54,10 @@ http://0.0.0.0:8080/<protocol>/<ip and port>/<function code>/<address start>/<fo
 3. function code: modbus的功能代碼, 例如 - 15或16
 4. address start: modbus地址起始位置
 5. format: 將資料轉換成特定格式寫進去, 例如(整數類)I64BE,I64LE,I32BE,I32LE,I16BE,I16LE, (浮點數) F64BE,F64LE,F32BE,F32LE, (字串) S64BE,S64LE, 目前沒有檢查假如資料為字串, 強制轉成數字類可能會出錯
+
+## Static Page 靜態頁面
+### Show modegate data 用來呈現modgate資料
+```
+http://0.0.0.0:8080/ui/demo.html
+```
+1. Put your static in sub-folder ./html, 將你的靜態頁面放在 html 資料夾下面
