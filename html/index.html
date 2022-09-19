@@ -1,0 +1,129 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+   google.charts.load('current', {'packages':['gauge']});
+   google.charts.setOnLoadCallback(drawChart);
+
+  function turnOn(){
+    let body=[1];
+    fetch('http://192.168.50.138:8080/modbustcp/192.168.50.221:1502/16/0/I16BE',{
+      method:"POST",
+      headers:{
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(myJson) {
+      console.log(myJson);
+    });
+  }
+
+  function turnOff(){
+    let body=[0];
+    fetch('http://192.168.50.138:8080/modbustcp/192.168.50.221:1502/16/0/I16BE',{
+      method:"POST",
+      headers:{
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(myJson) {
+      console.log(myJson);
+    });
+  }
+
+  function drawStatus(){
+    fetch('http://192.168.50.138:8080/modbustcp/192.168.50.221:1502/3/0/2/I16BE')
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(myJson) {
+      console.log(myJson.data[0]);
+      if (myJson.data[0]==0) {
+        document.getElementById("status").innerHTML = "停機中";
+      }else{
+        document.getElementById("status").innerHTML = "運轉中";
+      }
+    });
+  }
+   function drawChart() {
+
+     var data = google.visualization.arrayToDataTable([
+       ['Label', 'Value'],
+       ['電表', 10],
+       ['電壓', 55],
+       ['電流', 68]
+     ]);
+
+     var options = {
+       width: 800, height: 240,
+       redFrom: 90, redTo: 100,
+       yellowFrom:75, yellowTo: 90,
+       minorTicks: 5
+     };
+
+     var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+
+     chart.draw(data, options);
+
+     setInterval(function() {
+       //data.setValue(0, 1, 40 + Math.round(60 * Math.random()));
+       chart.draw(data, options);
+     }, 13000);
+     setInterval(function() {
+       data.setValue(1, 1, 40 + Math.round(60 * Math.random()));
+       chart.draw(data, options);
+     }, 5000);
+     setInterval(function() {
+       data.setValue(2, 1, 60 + Math.round(20 * Math.random()));
+       chart.draw(data, options);
+     }, 26000);
+
+     setInterval(function() {
+      fetch('http://192.168.50.138:8080/modbustcp/192.168.50.221:1502/3/1/2/I16BE')
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+        console.log(myJson.data[0]);
+        data.setValue(0,1,myJson.data[0])
+      });
+      drawStatus();
+     }, 1000);
+   }
+ </script>
+
+<style>
+.button {
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.button1 {background-color: #4CAF50;} /* Green */
+.button2 {background-color: #ba0000;} /* Blue */
+.button3 {background-color: #4e4e4e;} /* Blue */
+</style>
+</head>
+
+<h1>Modgate前端示範</h1>
+<p>自己設計自己的人機介面而且可以輕鬆調整</p>
+
+<div>
+    <button class="button button1" onclick="turnOn()">開機</button>
+    <button class="button button2" onclick="turnOff()">關機</button>
+    <button class="button button3" id="status">關機</button>
+</div>
+
+<div id="chart_div" style="width: 800px; height: 240px;"></div>
